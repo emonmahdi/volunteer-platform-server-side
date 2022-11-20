@@ -77,11 +77,19 @@ async function run(){
         });
         //ORDER GET API
         app.get('/order', async(req, res) => {
-            const query = {};
+            const email = req?.query?.email; 
+            const query = {email: email};
             const cursor = ordersCollection.find(query);
             const result = await cursor.toArray();
             res.send(result);
-        })
+        });
+        // ORDER DELETE API
+        app.delete('/order/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id:ObjectId(id)};
+            const result = await ordersCollection.deleteOne(query);
+            res.send(result);
+        });
 
     }
     finally{
